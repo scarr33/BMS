@@ -79,46 +79,46 @@ export const movies = [
     votes: "15.2K",
     img: m5,
   },
-  //  {
-  //     "id": 6,
-  //     "title": "M3GAN 2.0",
-  //     "genre": "Horror/Sci-Fi/Thriller",
-  //     "rating": 8.4,
-  //     "votes": "117",
-  //     "img": m6
-  //   },
-  //   {
-  //     "id": 7,
-  //     "title": "Housefull 5",
-  //     "genre": "Comedy/Thriller",
-  //     "rating": 6.1,
-  //     "votes": "56.3K",
-  //     "img": m7
-  //   },
-  //   {
-  //     "id": 8,
-  //     "title": "Sitaare Zameen Par",
-  //     "genre": "Comedy/Drama/Sports",
-  //     "rating": 8.5,
-  //     "votes": "39.6K",
-  //     "img": m8
-  //   },
-  //   {
-  //     "id": 9,
-  //     "title": "Naruto the Movie: Ninja Clash in the Land of Snow",
-  //     "genre": "Action/Adventure/Animation/Comedy",
-  //     "rating": 9.6,
-  //     "votes": "51",
-  //     "img": m9
-  //   },
-  //   {
-  //     "id": 10,
-  //     "title": "28 Years Later",
-  //     "genre": "Horror/Thriller",
-  //     "rating": 7.9,
-  //     "votes": "3.7K",
-  //     "img": m10
-  //   }
+  {
+    id: 6,
+    title: "M3GAN 2.0",
+    genre: "Horror/Sci-Fi/Thriller",
+    rating: 8.4,
+    votes: "117",
+    img: m6,
+  },
+  {
+    id: 7,
+    title: "Housefull 5",
+    genre: "Comedy/Thriller",
+    rating: 6.1,
+    votes: "56.3K",
+    img: m7,
+  },
+  {
+    id: 8,
+    title: "Sitaare Zameen Par",
+    genre: "Comedy/Drama/Sports",
+    rating: 8.5,
+    votes: "39.6K",
+    img: m8,
+  },
+  {
+    id: 9,
+    title: "Naruto the Movie: Ninja Clash in the Land of Snow",
+    genre: "Action/Adventure/Animation/Comedy",
+    rating: 9.6,
+    votes: "51",
+    img: m9,
+  },
+  {
+    id: 10,
+    title: "28 Years Later",
+    genre: "Horror/Thriller",
+    rating: 7.9,
+    votes: "3.7K",
+    img: m10,
+  },
 ];
 
 export const allMovies = [
@@ -266,7 +266,7 @@ export const theatres = [
       { time: "6:45 PM", label: "RECLINERS", highlight: true },
       { time: "11:35 PM", label: "RECLINERS" },
       { time: "7:45 PM", label: "RECLINERS" },
-      { time: "12:35 PM", label: "RECLINERS" }
+      { time: "12:35 PM", label: "RECLINERS" },
     ],
   },
   {
@@ -327,9 +327,9 @@ export const ordersData = [
     bookingTime: "Apr 29 2025 07:46PM",
     paymentMethod: "Credit/Debit Card",
     poster: m11,
-    total: 607.10,
-    ticket: 495.00,
-    fee: 112.10
+    total: 607.1,
+    ticket: 495.0,
+    fee: 112.1,
   },
   {
     id: "XYCKAJS",
@@ -342,13 +342,24 @@ export const ordersData = [
     bookingTime: "Apr 25 2025 04:00PM",
     paymentMethod: "Credit/Debit Card",
     poster: m12,
-    total: 607.10,
-    ticket: 495.00,
-    fee: 112.10
-  }
+    total: 607.1,
+    ticket: 495.0,
+    fee: 112.1,
+  },
 ];
 
-export const filters = ["2D", "3D", "Wheelchair Friendly", "Premium Seats", "Recliners", "IMAX", "PVR PXL", "4DX", "Laser", "Dolby Atmos"];
+export const filters = [
+  "2D",
+  "3D",
+  "Wheelchair Friendly",
+  "Premium Seats",
+  "Recliners",
+  "IMAX",
+  "PVR PXL",
+  "4DX",
+  "Laser",
+  "Dolby Atmos",
+];
 
 export const tabs = ["Profile", "Your Orders"];
 
