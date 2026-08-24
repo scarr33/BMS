@@ -7,7 +7,7 @@ const movieRouter = express.Router();
 
 movieRouter.post("/", validate(MovieSchema), MovieController.createMovie);
 movieRouter.get("/", MovieController.getMovies);
-movieRouter.get("recommended", MovieController.getTopRecommendedMovies);
+movieRouter.get("/recommended", MovieController.getTopRecommendedMovies);
 movieRouter.get("/:id", MovieController.getMovieById);
 
 export default movieRouter;

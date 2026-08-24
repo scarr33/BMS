@@ -19,9 +19,7 @@ const Profile = () => {
                 activeTab === tab
                   ? "text-[#f74565]"
                   : "text-gray-500 hover:text-black"
-              }`}
-              onClick={() => setActiveTab(tab)}
-            >
+              }`}>
               {tab}
             </button>
           ))}
