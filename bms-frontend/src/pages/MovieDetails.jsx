@@ -1,10 +1,9 @@
 import React from "react";
-import m4 from "../assets/m4.avif";
 import TheatreTimings from "../components/movies/TheatreTimings";
 import { filters } from "../utils/constants";
 import {keepPreviousData, useQuery} from "@tanstack/react-query"
 import {getMovieById} from "../apis/index"
-import {data, useParams} from "react-router-dom"
+import { useParams} from "react-router-dom"
 
 // const movie = {
 //   id: 4,
@@ -31,7 +30,7 @@ const MovieDetails = () => {
     placeholderData: keepPreviousData
   })
 
-  console.log(movie)
+  // console.log(movie)
 
   return (
     <>
@@ -141,7 +140,7 @@ const MovieDetails = () => {
 
         {/* Theatres and Timings */}
 
-        <TheatreTimings movieId={movie?.data.movie.id} />
+        <TheatreTimings movieId={id} />
       </div>
     </>
   );

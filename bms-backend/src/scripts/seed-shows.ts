@@ -47,7 +47,7 @@ export const seedShow = async () => {
 
   const movieIds = ["6a8a36a9c4826bfee4ce6f6e", "6a8a36a9c4826bfee4ce6f6d"];
   const movies = await MovieModel.find({ _id: { $in: movieIds } });
-  const theatres = await TheaterModel.find({ state: "Karnataka" });
+  const theatres = await TheaterModel.find({ state: "Odisha" });
 
   if (!movies.length || !theatres.length) {
     console.error(
@@ -92,7 +92,7 @@ export const seedShow = async () => {
     }
   }
 
-  console.log("✅ Show seeding completed for selected movies in West Bengal.");
+  console.log("✅ Show seeding completed for selected movies in Odisha.");
 };
 
 mongoose

@@ -92,6 +92,11 @@ mongoose
         areas: ["Lalpur", "Harmu", "Morabadi", "Kokar"],
       },
       {
+        name: "Bhubaneswar",
+        state: "Odisha",
+        areas: ["Kalpana Square", "Rasulgarh", "Saheed Nagar", "BMC Mall"],
+      },
+      {
         name: "Surat",
         state: "Gujarat",
         areas: ["Adajan", "Piplod", "Vesu", "Varachha"],
