@@ -4,9 +4,11 @@ import { useState } from "react";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { getShowsByMovieAndLocation } from "../../apis";
 import { useLocation } from "../../context/LocationContext";
+import { useNavigate } from "react-router-dom";
 
 const TheatreTimings = ({movieId}) => {
   const {location} = useLocation();
+  const navigate = useNavigate()
 
   const today = dayjs();
   const [selectedDate, setSelectedDate] = useState(today);
@@ -66,8 +68,12 @@ const TheatreTimings = ({movieId}) => {
             </div>
             {/* Timings */}
             <div className="flex flex-wrap gap-3 ml-11">
-              {curr.theater.shows.map((slot, i) => (
-                <button
+              {curr.theater.shows.map((slot, i) =>{
+                const theaterId = curr.theater.theaterDetails._id;
+                const movieName = curr.movie.title;
+                return(
+                  <button
+                  onClick={()=>navigate(`/movies/${movieId}/${movieName}/${location}/theater/${theaterId}/show/${slot._id}/seat-layout`)}
                   key={i}
                   className="border cursor-pointer hover:bg-gray-100 border-gray-300 rounded-[16px] px-12 py-2 text-sm flex flex-col  items-center justify-center"
                 >
@@ -78,7 +84,8 @@ const TheatreTimings = ({movieId}) => {
                     {slot.audioType.toUpperCase()}
                   </span>
                 </button>
-              ))}
+                )
+              })}
             </div>
           </div>
         ))}
