@@ -17,6 +17,10 @@ export const getUserById = async (id: string): Promise<IUser | null> => {
   return await UserModel.findById(id);
 };
 
+export const getUserByEmail = async (email: string): Promise<IUser | null> => {
+  return await UserModel.findOne({ email });
+};
+
 // Activate User
 export const activateUser = async (
   id: string,
