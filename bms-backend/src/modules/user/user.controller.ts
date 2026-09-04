@@ -51,7 +51,7 @@ export const activateUser = async (
   try {
     const userId = req.params.id;
     const updateData = req.body;
-    const updateData.activateUser = true; // Ensure activateUser is set to true
+    updateData.activateUser = true; // Ensure activateUser is set to true
     const updatedUser = await UserService.activateUser(userId, updateData);
     res.status(200).json(updatedUser);
   } catch (error) {

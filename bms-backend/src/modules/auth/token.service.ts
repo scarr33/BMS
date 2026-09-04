@@ -4,7 +4,7 @@ import jwt, { JwtPayload } from "jsonwebtoken";
 import { RefreshTokenModel } from "./refresh.model";
 
 // Generate access and refresh tokens
-export const generateToken = async (
+export const generateToken = (
   payload: ITokenPayload,
 ): { accessToken: string; refreshToken: string } => {
   const accessToken = jwt.sign(payload, config.accessTokenSecret, {

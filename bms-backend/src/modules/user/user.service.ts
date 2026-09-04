@@ -1,5 +1,5 @@
 import { IUser } from "./user.interface";
-import UserModel from "./user.model";
+import { UserModel } from "./user.model";
 
 // Create user
 export const createUser = async (user: IUser): Promise<IUser> => {
