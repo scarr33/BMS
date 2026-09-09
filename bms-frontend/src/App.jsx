@@ -23,7 +23,7 @@ function App() {
     <>
       <div className="flex flex-col min-h-screen">
         {/* If the page is not seatLayout display Header */}
-        {!isCheckoutPage && isSeatLayoutPage && <Header />}
+        {!isCheckoutPage && !isSeatLayoutPage && <Header />}
         <main className="flex-grow">
           <Routes>
             <Route path="/" element={<Home />} />
@@ -44,7 +44,7 @@ function App() {
             />
           </Routes>
         </main>
-        {!isSeatLayoutPage && isCheckoutPage && <Footer />}
+        {!isSeatLayoutPage && !isCheckoutPage && <Footer />}
       </div>
     </>
   );

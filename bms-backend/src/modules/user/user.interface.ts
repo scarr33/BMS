@@ -1,10 +1,10 @@
 export interface IUser {
   _id?: string;
   email: string;
-  name: string;
+  name?: string;
   phone?: number;
-  role: "admin" | "user";
+  role?: "admin" | "user";
   activateUser?: boolean;
-  updatedAt: Date;
-  createdAt: Date;
+  updatedAt?: Date;
+  createdAt?: Date;
 }

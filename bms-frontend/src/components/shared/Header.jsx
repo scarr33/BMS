@@ -1,13 +1,15 @@
-import React from "react";
 import mainLogo from "../../assets/main-icon.png";
 import map from "../../assets/pin.gif";
 import { FaSearch } from "react-icons/fa";
 import { useLocation } from "../../context/LocationContext";
 import { useNavigate } from "react-router-dom";
+import SignInModel from "./SignInModel";
+import { useAuth } from "../../context/AuthContext";
 
 const Header = () => {
   const { location, loading, error } = useLocation();
-  const navigate = useNavigate()
+  const { toggleModal } = useAuth();
+  const navigate = useNavigate();
   return (
     <div className="w-full text-sm bg-white">
       {/* Top Navbar */}
@@ -16,7 +18,7 @@ const Header = () => {
           {/* Left Part */}
           <div className="flex items-center space-x-4">
             <img
-              onClick={()=>navigate('/')}
+              onClick={() => navigate("/")}
               src={mainLogo}
               alt="logo"
               className="h-8 object-contain cursor-pointer"
@@ -37,7 +39,10 @@ const Header = () => {
                 {location && <img src={map} alt="logo" className="h-8" />}
                 {location && <p>{location} &nbsp;</p>}
               </div>
-              <button className="bg-[#f84464] cursor-pointer text-white px-4 py-1.5 rounded text-sm">
+              <button
+                onClick={() => toggleModal()}
+                className="bg-[#f84464] cursor-pointer text-white px-4 py-1.5 rounded text-sm"
+              >
                 Sign In
               </button>
             </div>
@@ -48,7 +53,12 @@ const Header = () => {
       <div className="bg-[#f2f2f2] px-4 md:px-8">
         <div className="max-w-screen-xl mx-auto flex justify-between items-center py-2 text-gray-700">
           <div className="flex items-center space-x-6 font-medium">
-            <span onClick={()=> navigate("/movies")} className="cursor-pointer hover:text-red-500">Movies</span>
+            <span
+              onClick={() => navigate("/movies")}
+              className="cursor-pointer hover:text-red-500"
+            >
+              Movies
+            </span>
             <span className="cursor-pointer hover:text-red-500">Stream</span>
             <span className="cursor-pointer hover:text-red-500">Events</span>
             <span className="cursor-pointer hover:text-red-500">Plays</span>
@@ -65,6 +75,7 @@ const Header = () => {
           </div>
         </div>
       </div>
+      <SignInModel />
     </div>
   );
 };

@@ -83,7 +83,9 @@ export const verifyOTP = async (
   try {
     user = await UserService.getUserByEmail(email);
     if (!user) {
-      user = await UserService.createUser(email);
+      user = await UserService.createUser({
+        email,
+      });
     }
   } catch (error) {
     return next(error);

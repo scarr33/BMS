@@ -48,7 +48,7 @@ const mailGenerator = new MailGen({
 export const sendOTPtoEmail = async (email: string, otp: number) => {
   const emailTemp: any = {
     body: {
-      name: "",
+      name: "Suchak",
       intro:
         "Welcome to bookMyScreen! We're very excited to have you on board.",
       action: {
@@ -64,7 +64,7 @@ export const sendOTPtoEmail = async (email: string, otp: number) => {
     },
   };
 
-  const mail = mailGenerator.generatePlaintext(emailTemp);
+  const mail = mailGenerator.generate(emailTemp);
 
   let message = {
     from: config.emailUsername,
