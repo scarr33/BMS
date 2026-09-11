@@ -1,6 +1,6 @@
 import mainLogo from "../../assets/main-icon.png";
 import map from "../../assets/pin.gif";
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaUser } from "react-icons/fa";
 import { useLocation } from "../../context/LocationContext";
 import { useNavigate } from "react-router-dom";
 import SignInModel from "./SignInModel";
@@ -8,7 +8,7 @@ import { useAuth } from "../../context/AuthContext";
 
 const Header = () => {
   const { location, loading, error } = useLocation();
-  const { toggleModal } = useAuth();
+  const { toggleModal, auth, user } = useAuth();
   const navigate = useNavigate();
   return (
     <div className="w-full text-sm bg-white">
@@ -39,12 +39,28 @@ const Header = () => {
                 {location && <img src={map} alt="logo" className="h-8" />}
                 {location && <p>{location} &nbsp;</p>}
               </div>
-              <button
-                onClick={() => toggleModal()}
-                className="bg-[#f84464] cursor-pointer text-white px-4 py-1.5 rounded text-sm"
-              >
-                Sign In
-              </button>
+              {auth ? (
+                <>
+                  <span className="cursor-pointer text-sm font-medium border rounded-full border-gray-300 p-2">
+                    <FaUser className="text-gray-500" />
+                  </span>
+                  <span
+                    onClick={() => {
+                      navigate(`/profile/${user?._id}`);
+                    }}
+                    className="text-sm -ml-3 font-normal cursor-pointer hover:text-red-500"
+                  >
+                    Hi, {user ? user?.name.split(" ")[0] : "Test User"} &nbsp; ▼
+                  </span>
+                </>
+              ) : (
+                <button
+                  onClick={() => toggleModal()}
+                  className="bg-[#f84464] cursor-pointer text-white px-4 py-1.5 rounded text-sm"
+                >
+                  Sign In
+                </button>
+              )}
             </div>
           </div>
         </div>

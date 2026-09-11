@@ -1,11 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useAuth } from "../../context/AuthContext";
+import { BeatLoader } from "react-spinners";
 
 const StepEmail = ({ onNext }) => {
   const [email, setEmail] = useState();
+  const { sendOtpRequest, otpLoader } = useAuth();
+
   const handleSendOtp = (e) => {
     e.preventDefault();
-    onNext();
+    if (!email) return;
+    sendOtpRequest({ email, onNext });
   };
+
   return (
     <div className="flex flex-col gap-3 px-10 py-6">
       <h2 className="text-center text-lg font-semibold">Enter your email</h2>
@@ -29,7 +35,7 @@ const StepEmail = ({ onNext }) => {
         onClick={handleSendOtp}
         className="w-full cursor-pointer text-white bg-black py-2 rounded-md text-lg hover:bg-gray-800 transition "
       >
-        Continue
+        {otpLoader ? <BeatLoader size={12} color="white" /> : "Continue"}
       </button>
       <p>
         By entering your email id, you're agreeing to our{" "}
