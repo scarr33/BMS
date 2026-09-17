@@ -32,6 +32,8 @@ export const isVerifiedUser = async (
       accessToken,
     )) as TokenPayload;
 
+    console.log(decodedToken);
+
     const user = await UserService.getUserById(decodedToken._id);
 
     if (!user) {

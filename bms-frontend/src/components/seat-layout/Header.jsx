@@ -2,9 +2,12 @@ import React from "react";
 import mainLogo from "../../assets/main-icon.png";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
+import { FaUser } from "react-icons/fa";
+import { useAuth } from "../../context/AuthContext";
 
 const Header = ({ showData, type }) => {
   const navigate = useNavigate();
+  const { auth, user, toggleModal } = useAuth();
   return (
     <>
       <div className="border-b border-gray-200 shadow-sm bg-white">
@@ -39,12 +42,31 @@ const Header = ({ showData, type }) => {
             </div>
           )}
 
-          <button
-            onClick={() => toggleModal()}
-            className="bg-[#f84464] cursor-pointer text-white px-4 py-1.5 rounded text-sm"
-          >
-            Sign in
-          </button>
+          {auth ? (
+            <>
+              <div className="flex items-center gap-6">
+                <span className="cursor-pointer text-sm font-medium border rounded-full border-gray-300 p-2">
+                  <FaUser className="text-gray-500" />
+                </span>
+                <span
+                  onClick={() => {
+                    navigate(`/profile/${user?._id}`);
+                  }}
+                  className="text-sm -ml-3 font-normal cursor-pointer hover:text-red-500"
+                >
+                  Hi, {user?.name ? user?.name.split(" ")[0] : "Test User"}{" "}
+                  &nbsp; ▼
+                </span>
+              </div>
+            </>
+          ) : (
+            <button
+              onClick={() => toggleModal()}
+              className="bg-[#f84464] cursor-pointer text-white px-4 py-1.5 rounded text-sm"
+            >
+              Sign In
+            </button>
+          )}
         </div>
       </div>
       {/* Show Timings */}

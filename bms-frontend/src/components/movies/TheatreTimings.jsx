@@ -5,10 +5,12 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { getShowsByMovieAndLocation } from "../../apis";
 import { useLocation } from "../../context/LocationContext";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
-const TheatreTimings = ({movieId}) => {
-  const {location} = useLocation();
-  const navigate = useNavigate()
+const TheatreTimings = ({ movieId }) => {
+  const { location } = useLocation();
+  const navigate = useNavigate();
+  const { auth, toggleModal } = useAuth();
 
   const today = dayjs();
   const [selectedDate, setSelectedDate] = useState(today);
@@ -16,12 +18,17 @@ const TheatreTimings = ({movieId}) => {
 
   const next7days = Array.from({ length: 7 }, (_, i) => today.add(i, "day"));
 
-  const {data:showData, isLoading, isError} = useQuery({
+  const {
+    data: showData,
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["show", movieId, location, formattedDate],
-    queryFn: async() => await getShowsByMovieAndLocation(movieId, location, formattedDate),
+    queryFn: async () =>
+      await getShowsByMovieAndLocation(movieId, location, formattedDate),
     placeholderData: keepPreviousData,
-    select: (res) => res.data
-  })
+    select: (res) => res.data,
+  });
 
   return (
     <>
@@ -46,13 +53,11 @@ const TheatreTimings = ({movieId}) => {
       </div>
       {/* Theater */}
       <div className="space-y-8 px-4 mb-10">
-        {
-          showData?.length === 0 && (
-            <div className="text-center text-gray-500">
-              No shows available for the selected date.
-            </div>
-          )
-        }
+        {showData?.length === 0 && (
+          <div className="text-center text-gray-500">
+            No shows available for the selected date.
+          </div>
+        )}
         {showData?.map((curr, i) => (
           <div key={i}>
             <div className="flex items-start gap-3 mb-2">
@@ -68,23 +73,31 @@ const TheatreTimings = ({movieId}) => {
             </div>
             {/* Timings */}
             <div className="flex flex-wrap gap-3 ml-11">
-              {curr.theater.shows.map((slot, i) =>{
+              {curr.theater.shows.map((slot, i) => {
                 const theaterId = curr.theater.theaterDetails._id;
                 const movieName = curr.movie.title;
-                return(
+                return (
                   <button
-                  onClick={()=>navigate(`/movies/${movieId}/${movieName}/${location}/theater/${theaterId}/show/${slot._id}/seat-layout`)}
-                  key={i}
-                  className="border cursor-pointer hover:bg-gray-100 border-gray-300 rounded-[16px] px-12 py-2 text-sm flex flex-col  items-center justify-center"
-                >
-                  <span className="leading-tight font-semibold">
-                    {slot.startTime}
-                  </span>
-                  <span className="text-[10px] text-gray-500 font-black">
-                    {slot.audioType.toUpperCase()}
-                  </span>
-                </button>
-                )
+                    onClick={() => {
+                      if (!auth) {
+                        toggleModal();
+                        return;
+                      }
+                      navigate(
+                        `/movies/${movieId}/${movieName}/${location}/theater/${theaterId}/show/${slot._id}/seat-layout`,
+                      );
+                    }}
+                    key={i}
+                    className="border cursor-pointer hover:bg-gray-100 border-gray-300 rounded-[16px] px-12 py-2 text-sm flex flex-col  items-center justify-center"
+                  >
+                    <span className="leading-tight font-semibold">
+                      {slot.startTime}
+                    </span>
+                    <span className="text-[10px] text-gray-500 font-black">
+                      {slot.audioType.toUpperCase()}
+                    </span>
+                  </button>
+                );
               })}
             </div>
           </div>

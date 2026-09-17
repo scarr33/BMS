@@ -34,14 +34,14 @@ const Header = () => {
           </div>
           {/* Right Part */}
           <div>
-            <div className="flex item-center space-x-6">
+            <div className="flex items-center space-x-6">
               <div className="text-sm font-medium cursor-pointer mt-2">
                 {location && <img src={map} alt="logo" className="h-8" />}
                 {location && <p>{location} &nbsp;</p>}
               </div>
               {auth ? (
                 <>
-                  <span className="cursor-pointer text-sm font-medium border rounded-full border-gray-300 p-2">
+                  <span className="cursor-pointer text-sm font-medium border rounded-full border-gray-300 p-2 h-fit">
                     <FaUser className="text-gray-500" />
                   </span>
                   <span
@@ -50,7 +50,8 @@ const Header = () => {
                     }}
                     className="text-sm -ml-3 font-normal cursor-pointer hover:text-red-500"
                   >
-                    Hi, {user ? user?.name.split(" ")[0] : "Test User"} &nbsp; ▼
+                    Hi, {user?.name ? user?.name.split(" ")[0] : "Test User"}{" "}
+                    &nbsp; ▼
                   </span>
                 </>
               ) : (

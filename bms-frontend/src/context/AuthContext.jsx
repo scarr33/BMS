@@ -79,10 +79,10 @@ export const AuthProvider = ({ children }) => {
     const { name, phone } = data;
     const id = user?._id;
 
-    if (!id) {
-      toast.error("User session expired. Please verify OTP again.");
-      return;
-    }
+    // if (!id) {
+    //   toast.error("User session expired. Please verify OTP again.");
+    //   return;
+    // }
 
     const reqData = { id, name, phone };
     activateUserMutation.mutate(reqData, {

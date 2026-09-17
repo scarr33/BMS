@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../components/seat-layout/Header";
 import dayjs from "dayjs";
 import { calculateTotalPrice, groupSeatsByType } from "../utils/index";
 import { FaInfoCircle } from "react-icons/fa";
 import { BiSolidOffer } from "react-icons/bi";
 import { CiUser, CiCircleQuestion } from "react-icons/ci";
+import { useAuth } from "../context/AuthContext";
+import { useLocation } from "../context/LocationContext";
+import { useSeatContext } from "../context/SeatContext";
+import { useNavigate } from "react-router-dom";
 
 const Checkout = () => {
   // Mock static data
@@ -27,19 +31,29 @@ const Checkout = () => {
     },
   };
 
-  const selectedSeats = [
-    { type: "PREMIUM", seatNumber: "B5", price: 250 },
-    { type: "EXECUTIVE", seatNumber: "B6", price: 250 },
-  ];
+  // const selectedSeats = [
+  //   { type: "PREMIUM", seatNumber: "B5", price: 250 },
+  //   { type: "EXECUTIVE", seatNumber: "B6", price: 250 },
+  // ];
 
-  const user = {
-    name: "Suchak Barik",
-    phone: "9861079219",
-    email: "suchak@gmail.com",
-    state: "Odisha",
-  };
+  // const user = {
+  //   name: "Suchak Barik",
+  //   phone: "9861079219",
+  //   email: "suchak@gmail.com",
+  //   state: "Odisha",
+  // };
 
-  //   const { base, tax, total } = calculateTotalPrice(selectedSeats);
+  const navigate = useNavigate();
+  const { user } = useAuth();
+  const { location } = useLocation();
+  const { selectedSeats, shows: showData } = useSeatContext();
+  const { base, tax, total } = calculateTotalPrice(selectedSeats);
+
+  useEffect(() => {
+    if (!showData || selectedSeats.length === 0) {
+      navigate("/");
+    }
+  }, []);
   return (
     <div className="min-h-screen w-full bg-white">
       <Header type="checkout" />
@@ -50,32 +64,35 @@ const Checkout = () => {
             {/* Movie Details */}
             <div className="flex gap-4">
               <img
-                src={shows.movie.posterUrl}
-                alt={shows.movie.title}
+                src={showData?.movie.posterUrl}
+                alt={showData?.movie.title}
                 className="w-[60px] h-[90px] rounded object-cover"
               />
               <div>
-                <h3 className="font-semibold text-lg">{shows.movie.title}</h3>
-                <p className="text-sm text-gra-600">
-                  {shows.movie.certification} ●{" "}
-                  {shows.movie.languages.join(", ")} ●{" "}
-                  {shows.movie.format.join(", ")}
+                <h3 className="font-semibold text-lg">
+                  {showData?.movie.title}
+                </h3>
+                <p className="text-sm text-gray-600">
+                  {showData?.movie.certification} ●{" "}
+                  {showData?.movie.languages.join(", ")} ●{" "}
+                  {showData?.movie.format.join(", ")}
                 </p>
                 <p className="text-sm text-gray-600">
-                  {shows.theatre.name}, {shows.theatre.city},{" "}
-                  {shows.theatre.state}
+                  {showData?.theater.name}, {showData?.theater.city},{" "}
+                  {showData?.theater.state}
                 </p>
               </div>
             </div>
             {/* Seat Selection */}
             <div className="border border-gray-200 rounded-[24px] px-6 py-5">
               <p className="text-md font-medium border-b pb-5 border-gray-200">
-                {dayjs(shows.date, "DD-MM-YYYY")
+                {dayjs(showData?.date, "DD-MM-YYYY")
                   .format("D MMMM YYYY")
                   .split(" ")
                   .slice(0, 2)
                   .join(" ")}{" "}
-                &nbsp;● <span className="font-semibold">{shows.startTime}</span>
+                &nbsp;●{" "}
+                <span className="font-semibold">{showData?.startTime}</span>
               </p>
               <div className="flex items-center justify-between mt-4 mb-4">
                 <div>
@@ -84,17 +101,19 @@ const Checkout = () => {
                   </p>
                   <div className="text-sm text-gray-500">
                     <span className="font-medium">
-                      {selectedSeats.map((seat) => (
-                        <p className="font-medium">
-                          {seat.type} - {seat.seatNumber}
-                        </p>
-                      ))}
+                      {groupSeatsByType(selectedSeats).map(
+                        ({ type, seats }) => (
+                          <p key={type} className="font-medium">
+                            {type} - {seats.join(", ")}
+                          </p>
+                        ),
+                      )}
                     </span>
                   </div>
                 </div>
                 <p className="text-md font-semibold mt-2">
                   <span className="text-gray-700">₹</span>
-                  <span>123</span>
+                  <span>₹{base}</span>
                 </p>
               </div>
             </div>
@@ -124,15 +143,15 @@ const Checkout = () => {
             <div className="border border-gray-200 rounded-[24px] px-6 py-7 space-y-2">
               <div className="flex justify-between text-md">
                 <span className="text-sm text-gray-500">Order amount</span>
-                <span>₹123</span>
+                <span>₹{base}</span>
               </div>
               <div className="flex justify-between text-md pb-4">
                 <span className="font-semibold text-sm">Taxes & Fees (5%)</span>
-                <span>₹43</span>
+                <span>₹{tax}</span>
               </div>
               <div className="flex justify-between text-md font-semibold border-t border-gray-200 pt-4">
                 <span>To be paid</span>
-                <span>₹500</span>
+                <span>₹{total}</span>
               </div>
             </div>
             {/* User Details */}
@@ -140,10 +159,10 @@ const Checkout = () => {
             <div className="border flex items-start gap-3 border-gray-200 rounded-[24px] px-6 py-7">
               <CiUser size={24} />
               <div className="-mt-1">
-                <p className="text-sm font-medium">{user.name}</p>
+                <p className="text-sm font-medium">{user?.name}</p>
                 <p className="text-sm font-medium">+91-{user?.phone}</p>
-                <p className="text-sm font-medium">{user.email}</p>
-                <p className="text-sm font-medium">{user.state}</p>
+                <p className="text-sm font-medium">{user?.email}</p>
+                <p className="text-sm font-medium">{location}</p>
               </div>
             </div>
             {/* Terms and button */}
@@ -156,7 +175,7 @@ const Checkout = () => {
 
             <div className="flex justify-between items-center bg-black rounded-[24px] px-6 py-4 cursor-pointer">
               <p className="text-white font-bold">
-                ₹500 <span className="text-xs font-medium">TOTAL</span>
+                ₹{total} <span className="text-xs font-medium">TOTAL</span>
               </p>
               <p className="text-white font-medium">Proceed To Pay</p>
             </div>

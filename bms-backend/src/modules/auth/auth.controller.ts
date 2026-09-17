@@ -4,6 +4,8 @@ import * as UserService from "../user/user.service";
 import * as TokenService from "./token.service";
 import createHttpError from "http-errors";
 import { isValidEmail } from "../../utils";
+import { ITokenPayload } from "./auth.interface";
+import { JwtPayload } from "jsonwebtoken";
 
 export const sendOtp = async (
   req: Request,
@@ -133,4 +135,79 @@ export const logout = async (
   } catch (error) {
     next(error);
   }
+};
+
+export const refreshToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  // Get refresh token from cookie
+  const { refreshToken: refreshTokenFromCookies } = req.cookies;
+
+  if (!refreshTokenFromCookies) {
+    const err = new createHttpError.Unauthorized(
+      "Refresh token not found, please login  again",
+    );
+    return next(err);
+  }
+
+  // Verify refresh token
+  let decodedToken: ITokenPayload | JwtPayload | string;
+  try {
+    decodedToken = TokenService.verifyRefreshToken(
+      refreshTokenFromCookies,
+    ) as ITokenPayload;
+  } catch (error) {
+    const err = new createHttpError.Unauthorized(
+      "Invalid refresh token, please login  again",
+    );
+    return next(err);
+  }
+
+  // Check if refresh token is in DB
+  try {
+    const token = await TokenService.findRefreshToken(
+      decodedToken._id,
+      refreshTokenFromCookies,
+    );
+    if (!token) {
+      const err = new createHttpError.Unauthorized(
+        "Refresh token not found in database, please login again",
+      );
+      return next(err);
+    }
+  } catch (error) {
+    const err = new createHttpError.Unauthorized("");
+  }
+
+  // Generate new token
+  const { accessToken, refreshToken } = TokenService.generateToken({
+    _id: decodedToken._id,
+    email: decodedToken.email,
+  });
+
+  // Update refresh token in DB
+  try {
+    await TokenService.updateRefreshToken(decodedToken._id, refreshToken);
+  } catch (error) {
+    return next(error);
+  }
+
+  //  Send new tokens to client in cookie
+  res.cookie("accessToken", accessToken, {
+    maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
+    httpOnly: true,
+    sameSite: "none",
+    secure: true,
+  });
+
+  res.cookie("refreshToken", refreshToken, {
+    maxAge: 1000 * 60 * 60 * 24 * 30, // 30 days
+    httpOnly: true,
+    sameSite: "none",
+    secure: true,
+  });
+
+  res.json({ auth: true }).status(200);
 };
