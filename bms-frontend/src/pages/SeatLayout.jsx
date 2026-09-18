@@ -7,6 +7,7 @@ import { getShowById } from "../apis";
 import screenImg from "../assets/screen.png";
 import { useSeatContext } from "../context/SeatContext";
 import { useLocation } from "../context/LocationContext";
+import { socket } from "../utils/socket";
 
 const Seat = ({ seat, row, selectedSeats, onClick }) => {
   const seatId = `${row}${seat.number}`;
