@@ -1,4 +1,3 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
@@ -19,17 +18,15 @@ const queryClient = new QueryClient({
 });
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <Router>
-      <QueryClientProvider client={queryClient}>
-        <LocationProvide>
-          <AuthProvider>
-            <SeatContextProvider>
-              <App />
-            </SeatContextProvider>
-          </AuthProvider>
-        </LocationProvide>
-      </QueryClientProvider>
-    </Router>
-  </StrictMode>,
+  <Router>
+    <QueryClientProvider client={queryClient}>
+      <LocationProvide>
+        <AuthProvider>
+          <SeatContextProvider>
+            <App />
+          </SeatContextProvider>
+        </AuthProvider>
+      </LocationProvide>
+    </QueryClientProvider>
+  </Router>,
 );

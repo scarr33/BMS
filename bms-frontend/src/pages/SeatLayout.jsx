@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../components/seat-layout/Header";
 import Footer from "../components/seat-layout/Footer";
 import { useParams } from "react-router-dom";
@@ -8,10 +8,11 @@ import screenImg from "../assets/screen.png";
 import { useSeatContext } from "../context/SeatContext";
 import { useLocation } from "../context/LocationContext";
 import { socket } from "../utils/socket";
+import toast from "react-hot-toast";
 
-const Seat = ({ seat, row, selectedSeats, onClick }) => {
+const Seat = ({ seat, row, selectedSeats, lockedSeats, onClick }) => {
   const seatId = `${row}${seat.number}`;
-  const isLocked = false;
+  const isLocked = lockedSeats?.includes(seatId);
   const isSelected = selectedSeats.includes(seatId);
 
   return (
@@ -35,6 +36,7 @@ const Seat = ({ seat, row, selectedSeats, onClick }) => {
 };
 
 const SeatLayout = () => {
+  const [lockedSeats, setLockedSeats] = useState();
   const { selectedSeats, setSelectedSeats } = useSeatContext();
   const { location } = useLocation();
 
@@ -62,6 +64,39 @@ const SeatLayout = () => {
 
   const isSelectedSeats = selectedSeats.length > 0;
 
+  // Socket.io code start
+
+  useEffect(() => {
+    setSelectedSeats([]);
+    socket.emit("join-show", { showId });
+    socket.on("locked-seat-initials", ({ seatIds }) => {
+      setLockedSeats(seatIds);
+    });
+
+    socket.on("seat-locked", ({ seatIds, showId: incomingShowId }) => {
+      if (incomingShowId !== showId) return;
+
+      setLockedSeats((prev) => [...new Set({ ...prev, ...seatIds })]);
+    });
+
+    socket.on("seat-unlocked", ({ seatIds, showId: incomingShowId }) => {
+      if (incomingShowId !== showId) return;
+
+      setLockedSeats((prev) => prev.filter((id) => !seatIds.includes(id)));
+    });
+
+    socket.on(
+      "seat-locked-failed",
+      ({ showId, requested: seatIds, alreadyLocked }) => {
+        toast.error(
+          `Some seats are already locked: ${alreadyLocked.join(", ")}`,
+        );
+      },
+    );
+  }, [showId]);
+
+  console.log("lockedseats: ", lockedSeats);
+  // Socket.io code ends
   return (
     <>
       <div className="h-screen overflow-y-hidden">
@@ -102,6 +137,7 @@ const SeatLayout = () => {
                                 seat={seat}
                                 row={rowObj.row}
                                 selectedSeats={selectedSeats}
+                                lockedSeats={lockedSeats}
                                 onClick={() =>
                                   handleSelectSeat(rowObj.row, seat.number)
                                 }
