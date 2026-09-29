@@ -1,5 +1,3 @@
-import React from "react";
-import { movies } from "../utils/constants";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { getRecommendedMovies } from "../apis";
 import { useNavigate } from "react-router-dom";
