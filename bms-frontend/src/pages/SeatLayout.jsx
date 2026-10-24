@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Header from "../components/seat-layout/Header";
 import Footer from "../components/seat-layout/Footer";
 import { useParams } from "react-router-dom";
@@ -19,8 +19,8 @@ const Seat = ({ seat, row, selectedSeats, lockedSeats, onClick }) => {
     <button
       className={`w-9 h-9 m-[2px] rounded-lg border text-sm
       ${
-        seat.status === "occupied"
-          ? "bg-gray-100 border-gray-200 text-gray-400 cursor-not-allowed"
+        seat.status === "BOOKED"
+          ? "bg-gray-100 border-red-200 text-red-400 cursor-not-allowed"
           : isLocked
             ? "bg-gray-200 border-gray-300 text-gray-400 cursor-not-allowed"
             : isSelected
@@ -30,7 +30,7 @@ const Seat = ({ seat, row, selectedSeats, lockedSeats, onClick }) => {
       disabled={seat.status === "occupied" || isLocked}
       onClick={onClick}
     >
-      {seat.status === "occupied" || isLocked ? "X" : seat.number}
+      {seat.status === "BOOKED" || isLocked ? "X" : seat.number}
     </button>
   );
 };

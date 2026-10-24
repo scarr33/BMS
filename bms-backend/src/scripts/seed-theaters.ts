@@ -6,7 +6,8 @@ import { config } from "../config/config";
 dotenv.config();
 
 mongoose
-  .connect(config.databaseUrl as string)
+  .connect(config.databaseReplicaSet as string)
+  // .connect(config.databaseUrl as string)
   .then(async () => {
     console.log("Connected to MongoDB ✅");
 

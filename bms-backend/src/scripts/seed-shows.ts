@@ -42,12 +42,12 @@ export const seedShow = async () => {
   // This setup is only for testing purposes to avoid creating shows for all movies.
 
   // Otherwise, you can also do the things below commented if you want to create shows for all movies and states
-  //  const movies = await MovieModel.find({});
-  //  const theatres = await TheaterModel.find({});
+  const movies = await MovieModel.find({});
+  const theatres = await TheaterModel.find({});
 
-  const movieIds = ["6a8a36a9c4826bfee4ce6f6e", "6a8a36a9c4826bfee4ce6f6d"];
-  const movies = await MovieModel.find({ _id: { $in: movieIds } });
-  const theatres = await TheaterModel.find({ state: "Odisha" });
+  // const movieIds = ["6a8a36a9c4826bfee4ce6f6e", "6a8a36a9c4826bfee4ce6f6d"];
+  // const movies = await MovieModel.find({ _id: { $in: movieIds } });
+  // const theatres = await TheaterModel.find({ state: "Odisha" });
 
   if (!movies.length || !theatres.length) {
     console.error(
@@ -96,7 +96,8 @@ export const seedShow = async () => {
 };
 
 mongoose
-  .connect(config.databaseUrl as string)
+  .connect(config.databaseReplicaSet as string)
+  // .connect(config.databaseUrl as string)
   .then(async () => {
     console.log("DB connected");
     await ShowModel.deleteMany({});

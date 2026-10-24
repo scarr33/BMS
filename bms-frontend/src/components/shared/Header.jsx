@@ -46,7 +46,7 @@ const Header = () => {
                   </span>
                   <span
                     onClick={() => {
-                      navigate(`/profile/${user?._id}`);
+                      navigate(`/profile/${user?._id}/profile`);
                     }}
                     className="text-sm -ml-3 font-normal cursor-pointer hover:text-red-500"
                   >

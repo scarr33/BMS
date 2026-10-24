@@ -59,7 +59,7 @@ const movies = [
     releaseDate: new Date("2025-07-10"),
     description:
       "An inside look at the world of Formula 1 racing and its iconic champions.",
-      format: ["2D", "3D", "IMAX 3D"]
+    format: ["2D", "3D", "IMAX 3D"],
   },
   {
     title: "From the World of John Wick: Ballerina",
@@ -102,7 +102,7 @@ const movies = [
     releaseDate: "2025-09-10",
     description:
       "Hiccup and Toothless return for a magical journey as a new Night Fury rises.",
-      format: ["2D", "3D"]
+    format: ["2D", "3D"],
   },
 
   {
@@ -118,7 +118,7 @@ const movies = [
     releaseDate: "2025-09-01",
     description:
       "Dinosaurs return in a world no longer in control — the race for survival begins anew.",
-    format: ["2D", "3D", "IMAX 3D"]
+    format: ["2D", "3D", "IMAX 3D"],
   },
   {
     title: "Sitaare Zameen Par",
@@ -152,7 +152,8 @@ const movies = [
 
 const seedMovies = async () => {
   try {
-    await mongoose.connect(config.databaseUrl as string);
+    await mongoose.connect(config.databaseReplicaSet as string);
+    // await mongoose.connect(config.databaseUrl as string);
     console.log("Connected to DB");
 
     await MovieModel.deleteMany();

@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import mongoose, { ClientSession, Types } from "mongoose";
 import { generateSeatLayout, groupShowsByTheatreAndMovie } from "../../utils";
 import { IShow } from "./show.interface";
 import { ShowModel } from "./show.model";
@@ -36,23 +36,52 @@ export const getShowById = async (showId: string) => {
 };
 
 export const updateSeatStatus = async (
-  showId: string,
-  row: string,
-  seatNumber: number,
+  showId: mongoose.Types.ObjectId,
+  seats: string[],
   status: "AVAILABLE" | "BOOKED" | "BLOCKED",
+  session: ClientSession,
 ) => {
-  return await ShowModel.updateOne(
-    {
-      _id: new Types.ObjectId(showId),
-      "seatLayout.row": row,
-    },
-    {
-      $set: {
-        "seatLayout.$.seats.$[elem].status": status,
-      },
-    },
-    {
-      arrayFilters: [{ "elem.number": seatNumber }],
-    },
-  );
+  const show = await ShowModel.findById(showId).session(session);
+  if (!show) {
+    throw new Error("Show not found");
+  }
+
+  // Parse each seat string like "A1" into row and number
+  const parsedSeats = seats.map((seat) => {
+    const row = seat.charAt(0);
+    const number = parseInt(seat.slice(1));
+    return { row, number };
+  });
+
+  //  Update the seatLayout based on the parsed seats
+  for (const parsedSeat of parsedSeats) {
+    // Search the seatLayout array for a row whose "row" field matches eg "A"
+    // seatLayout = [{row: "A", seats: [...]}, {row: "B", seats: [...]}]
+    const row = show.seatLayout.find((r) => r.row === parsedSeat.row);
+
+    if (!row) {
+      throw new Error(`Invalid seat row: ${parsedSeat.row}`);
+    }
+
+    // Inside the found row, search the seats array for matching seat number
+    // row.seats = [{number: 1, status: "AVAILABLE"}, {number:2, status:"AVAILABLE"}]
+    const seat = row.seats.find((s) => s.number === parsedSeat.number);
+
+    if (!seat) {
+      throw new Error(
+        `Invalid seat number : ${parsedSeat.number} in row ${parsedSeat.row}`,
+      );
+    }
+
+    // Guard: Prevent double booking if already BOOKED, reject the whole transaction
+    if (seat.status === "BOOKED") {
+      throw new Error(
+        `Seat ${parsedSeat.row}${parsedSeat.number} is already booked.`,
+      );
+    }
+
+    seat.status = status; //Update the seat status to BOOKED or BLOCKED
+  }
+  show.markModified("seatLayout"); // Inform Mongoose that seatLayout has been modified
+  await show.save({ session }); //Save the updated show document within the transaction session
 };

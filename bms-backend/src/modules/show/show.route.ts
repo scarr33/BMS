@@ -7,6 +7,5 @@ const showRouter = Router();
 showRouter.post("/", ShowController.createShow);
 showRouter.get("/", ShowController.getShowsByMovieDateLocation);
 showRouter.get("/:id", ShowController.getShowById);
-showRouter.put("/:showId", ShowController.updateSeatStatus);
 
 export default showRouter;

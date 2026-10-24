@@ -8,7 +8,7 @@ export const generateToken = (
   payload: ITokenPayload,
 ): { accessToken: string; refreshToken: string } => {
   const accessToken = jwt.sign(payload, config.accessTokenSecret, {
-    expiresIn: "1m",
+    expiresIn: "1h",
   });
   const refreshToken = jwt.sign(payload, config.refreshTokenSecret, {
     expiresIn: "7d",
