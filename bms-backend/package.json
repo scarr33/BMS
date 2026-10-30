@@ -6,10 +6,14 @@
   "scripts": {
     "dev": "nodemon",
     "build": "tsc",
+    "docker:publish": "docker build -t suchakbarik/bms-backend:v1 --platform linux/amd64 . && docker push suchakbarik/bms-backend:v1",
     "start": "node dist/server.ts",
     "seed:theaters": "ts-node src/scripts/seed-theaters.ts",
     "seed:movies": "ts-node src/scripts/seed-movies.ts",
-    "seed:shows": "ts-node src/scripts/seed-shows.ts"
+    "seed:shows": "ts-node src/scripts/seed-shows.ts",
+    "seed1": "node dist/scripts/seed-theater.js",
+    "seed2": "node dist/scripts/seed-movie.js",
+    "seed3": "node dist/scripts/seed-shows.js"
   },
   "author": "ProgrammingWithAmrit",
   "license": "ISC",
