@@ -5,6 +5,7 @@ import connectDB from "./config/db";
 import "./config/redis";
 import http from "http";
 import { registerSocketHandlers } from "./socket/sockethandlers";
+import { initMovieScheduler } from "./jobs/movieScheduler";
 
 const startServer = async () => {
   const port = config.port;
