@@ -13,7 +13,7 @@ const BookingHistory = () => {
     placeholderData: keepPreviousData,
   });
 
-  console.log(data?.data.bookings);
+  console.log("Booking data", data?.data?.bookings);
 
   if (isError) {
     return (
@@ -37,7 +37,7 @@ const BookingHistory = () => {
             >
               <div className="flex items-start gap-10">
                 <img
-                  src={booking.showId.movie.posterUrl}
+                  src={booking?.showId?.movie?.posterUrl}
                   alt=""
                   className="w-30 h-40 object-cover rounded"
                 />
@@ -46,25 +46,25 @@ const BookingHistory = () => {
                 <div className="flex items-start justify-between w-full">
                   <div className="flex-1">
                     <p className="font-normal text-lg">
-                      {booking.showId.movie.title}
+                      {booking?.showId?.movie?.title}
                     </p>
                     <p className="text-sm text-gray-500">
-                      {booking.showId.movie.format.join(" | ")}
+                      {booking?.showId?.movie.format.join(" | ")}
                     </p>
                     <p className="text-sm font-semibold text-gray-700 mt-2">
-                      {dayjs(booking.showId.date, "DD-MM-YYYY").format(
+                      {dayjs(booking?.showId?.date, "DD-MM-YYYY").format(
                         "D MMM YY",
                       )}{" "}
-                      -{booking.showId.startTime}{" "}
-                      {booking.showId.theater.name +
-                        booking.showId.theater.location}
+                      -{booking?.showId?.startTime}{" "}
+                      {booking?.showId?.theater?.name +
+                        booking?.showId?.theater?.location}
                     </p>
                     <small className="text-gray-700 mt-1">
-                      Quantity: {booking.seats.length}
+                      Quantity: {booking?.seats.length}
                     </small>
                     <p className="text-md font-semibold text-gray-700 mt-2">
                       <MdChair className="inline items-center mr-2" size={24} />{" "}
-                      {booking.seats.join(", ")}
+                      {booking?.seats.join(", ")}
                     </p>
                   </div>
                   <p>M-Ticket</p>
@@ -72,8 +72,8 @@ const BookingHistory = () => {
               </div>
               <div className="p-4 text-right">
                 <p className="text-sm text-gray-500">
-                  Ticket: ₹{booking.bookingFee.ticketPrice.toFixed(2)} +
-                  Convenience Fees: ₹{booking.bookingFee.convenience}
+                  Ticket: ₹{booking?.bookingFee?.ticketPrice.toFixed(2)} +
+                  Convenience Fees: ₹{booking?.bookingFee?.convenience}
                 </p>
                 <p className="text-xl font-bold">₹{booking.bookingFee.total}</p>
               </div>
@@ -82,16 +82,18 @@ const BookingHistory = () => {
               <div>
                 <p className="font-semibold">Booking Date & Time</p>
                 <p>
-                  {dayjs(booking.bookingDateTime).format("DD MMM YYYY, h:mm A")}
+                  {dayjs(booking?.bookingDateTime).format(
+                    "DD MMM YYYY, h:mm A",
+                  )}
                 </p>
               </div>
               <div>
                 <p className="font-semibold">Payment Method</p>
-                <p>{booking.paymentMethod.toUpperCase()}</p>
+                <p>{booking?.paymentMethod.toUpperCase()}</p>
               </div>
               <div>
                 <p className="font-semibold">BookingID</p>
-                <p>{booking.bookingRef}</p>
+                <p>{booking?.bookingRef}</p>
               </div>
             </div>
           </>

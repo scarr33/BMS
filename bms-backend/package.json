@@ -27,6 +27,7 @@
     "http-errors": "^2.0.0",
     "ioredis": "^6.0.0",
     "jsonwebtoken": "^9.0.2",
+    "k6": "^0.0.0",
     "mailgen": "^2.0.29",
     "mongoose": "^8.16.1",
     "nanoid": "^6.0.2",
