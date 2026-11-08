@@ -20,10 +20,22 @@ Welcome to the **BookMyScreen** , this system includes advanced features like **
 
 ## 🛠️ Tech Stack
 
-- **Frontend:** React.js, Tailwind CSS, Redux Toolkit
-- **Backend:** Node.js, Express.js, TypeScript
-- **Database:** MongoDB, Mongoose
-- **Deployment:** Render / Vercel _(Optional)_
+- **Frontend:** React.js, Tanstack Query, Tailwind CSS
+- **Backend:** Node.js, Express.js, TypeScript, Socket.io
+- **Database:** MongoDB, Mongoose, Redis
+- **Payment:** Razorpay
+- **Testing:** Grafana K6
+
+---
+
+## 💻 How to run:
+
+- Download or clone this repository.
+- Install and open Docker Desktop.
+- Open the project in terminal and run the command "docker compose up -d".
+- Now run the command "cd bms-frontend".
+- Then run the command "npm run dev".
+- Open the browser and hit the url "http://localhost:5173".
 
 ---
 
@@ -31,12 +43,3 @@ Welcome to the **BookMyScreen** , this system includes advanced features like **
 
 - 💼 **LinkedIn:** [suchakbarik](https://www.linkedin.com/in/suchakbarik/)
 - 🧑‍💻 **GitHub:** [scarr33](https://github.com/scarr33)
-
----
-
-## 🏷️ Tags
-
-`#mernproject` `#moviebooking` `#bookmyshowclone` `#reactjs` `#nodejs`  
-`#mongodb` `#webdevelopment` `#seatbooking` `#techprojects` `#fullstackproject`
-
----
